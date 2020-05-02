@@ -8,7 +8,7 @@ pipelines:
   release:
     pipeline:
       agent:
-        image: jenkinsxio/jenkins-x-installer:0.0.27
+        image: docker.packages.nuxeo.com/jxlabs-nos-jxl/jxl:0.0.183-jxlabs-nos-helm-3-2-0
       stages:
       - name: release
         options:
@@ -58,6 +58,11 @@ pipelines:
           dir: /workspace/source
           name: generate-helmfile
         - args:
+          - diff
+          command: helmfile
+          dir: /workspace/source/system
+          name: helmfile-system-diff
+        - args:
           - sync
           command: helmfile
           dir: /workspace/source/system
@@ -71,6 +76,11 @@ pipelines:
           command: jx
           dir: /workspace/source
           name: verify-ingress
+        - args:
+          - diff
+          command: helmfile
+          dir: /workspace/source/apps
+          name: helmfile-apps-diff
         - args:
           - sync
           command: helmfile
@@ -122,7 +132,7 @@ pipelines:
   pullRequest:
     pipeline:
       agent:
-        image: jenkinsxio/jenkins-x-installer:0.0.27
+        image: docker.packages.nuxeo.com/jxlabs-nos-jxl/jxl:0.0.183-jxlabs-nos-helm-3-2-0
       stages:
       - name: pr-checks
         options:
