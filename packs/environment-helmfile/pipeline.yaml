@@ -3,14 +3,14 @@ extends:
   file: pipeline.yaml
 agent:
   label: jenkins-go
-  container: gcr.io/jenkinsxio-labs/jxl
+  container: jenkinsxio/jenkins-x-installer:0.0.27
 pipelines:
   release:
     pipeline:
+      agent:
+        image: docker.packages.nuxeo.com/jxlabs-nos-jxl/jxl:0.0.183-jxlabs-nos-helm-3-2-0
       stages:
       - name: release
-        agent:
-          image: gcr.io/jenkinsxio-labs/jxl
         options:
           volumes:
           - name: jx-boot-secrets
@@ -28,14 +28,6 @@ pipelines:
               name: jx-boot-secrets
         steps:
         - args:
-          - boot
-          - secrets
-          - export
-          - --dir=.
-          command: jxl
-          dir: /workspace/source
-          name: verify-secrets
-        - args:
           - step
           - git
           - validate
@@ -47,6 +39,7 @@ pipelines:
           - verify
           - preinstall
           - --disable-verify-packages
+          - --provider-values-dir="kubeProviders"
           command: jx
           dir: /workspace/source
           name: verify-preinstall
@@ -59,9 +52,16 @@ pipelines:
           - step
           - create
           - helmfile
+          - --values
+          - ../jx-requirements.values.yaml.gotmpl
           command: jx
           dir: /workspace/source
           name: generate-helmfile
+        - args:
+          - diff
+          command: helmfile
+          dir: /workspace/source/system
+          name: helmfile-system-diff
         - args:
           - sync
           command: helmfile
@@ -71,10 +71,16 @@ pipelines:
           - step
           - verify
           - ingress
+          - --ingress-namespace=nginx
+          - --ingress-service=nginx-ingress-controller
           command: jx
           dir: /workspace/source
           name: verify-ingress
-          image: gcr.io/jenkinsxio-labs/jxl
+        - args:
+          - diff
+          command: helmfile
+          dir: /workspace/source/apps
+          name: helmfile-apps-diff
         - args:
           - sync
           command: helmfile
@@ -125,36 +131,22 @@ pipelines:
 
   pullRequest:
     pipeline:
+      agent:
+        image: docker.packages.nuxeo.com/jxlabs-nos-jxl/jxl:0.0.183-jxlabs-nos-helm-3-2-0
       stages:
       - name: pr-checks
-        agent:
-          image: gcr.io/jenkinsxio-labs/jxl
         options:
-          volumes:
-          - name: jx-boot-secrets
-            emptyDir: {}
           containerOptions:
             env:
             - name: HELM_PLUGINS
               value: "/root/.cache/helm/plugins"
-            - name: JX_SECRETS_YAML
-              value: "/secrets/jx-boot/secrets.yaml"
-            volumeMounts:
-            - mountPath: /secrets/jx-boot
-              name: jx-boot-secrets
         steps:
-        - args:
-          - boot
-          - secrets
-          - export
-          - --dir=.
-          command: jxl
-          dir: /workspace/source
-          name: verify-secrets
         - args:
           - step
           - create
           - helmfile
+          - --values
+          - ../jx-requirements.values.yaml.gotmpl
           command: jx
           dir: /workspace/source
           name: create-helmfile
