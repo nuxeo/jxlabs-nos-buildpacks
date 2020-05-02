@@ -14,7 +14,9 @@ pipelines:
         options:
           volumes:
           - name: jx-boot-secrets
-            emptyDir: {}
+            secret:
+              defaultMode: 420
+              secretName: jx-boot-secrets
           containerOptions:
             env:
             - name: HELM_PLUGINS
