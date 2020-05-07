@@ -8,7 +8,7 @@ pipelines:
   release:
     pipeline:
       agent:
-        image: docker.packages.nuxeo.com/jxlabs-nos-jxl/jxl:0.0.183-jxlabs-nos
+        image: docker.packages.nuxeo.com/jxlabs-nos-jxl/jxl:latest
       stages:
       - name: release
         options:
@@ -125,7 +125,7 @@ pipelines:
   pullRequest:
     pipeline:
       agent:
-        image: docker.packages.nuxeo.com/jxlabs-nos-jxl/jxl:0.0.183-jxlabs-nos
+        image: docker.packages.nuxeo.com/jxlabs-nos-jxl/jxl:latest
       stages:
       - name: pr-checks
         options:
