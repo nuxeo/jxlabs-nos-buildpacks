@@ -1,4 +1,7 @@
 modules:
+- name: jxr-kubernetes
+  gitUrl: https://github.com/jenkins-x/jxr-packs-kubernetes.git
+  gitRef: master
 - name: kubernetes
   gitUrl: https://github.com/jenkins-x-buildpacks/jenkins-x-kubernetes.git
   gitRef: master
