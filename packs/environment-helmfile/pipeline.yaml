@@ -8,7 +8,7 @@ pipelines:
   release:
     pipeline:
       agent:
-        image: gcr.io/build-jx-prod/jxlabs-nos/jxl:latest
+        image: gcr.io/build-jx-prod/jxlabs-nos/jxl
       stages:
       - name: release
         options:
@@ -125,7 +125,7 @@ pipelines:
   pullRequest:
     pipeline:
       agent:
-        image: gcr.io/build-jx-prod/jxlabs-nos/jxl:latest
+        image: gcr.io/build-jx-prod/jxlabs-nos/jxl
       stages:
       - name: pr-checks
         options:
