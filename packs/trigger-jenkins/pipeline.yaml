@@ -1,0 +1,3 @@
+extends:
+  import: jxr-kubernetes
+  file: trigger-jenkins/pipeline.yaml
