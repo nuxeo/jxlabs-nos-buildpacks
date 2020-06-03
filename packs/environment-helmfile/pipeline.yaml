@@ -17,8 +17,6 @@ pipelines:
             secretName: jx-boot-secrets
         containerOptions:
           env:
-          - name: HELM_PLUGINS
-            value: "/root/.cache/helm/plugins"
           - name: XDG_CONFIG_HOME
             value: "/builder/home"
           - name: JX_SECRETS_YAML
@@ -134,8 +132,6 @@ pipelines:
             secretName: jx-boot-secrets
         containerOptions:
           env:
-          - name: HELM_PLUGINS
-            value: "/root/.cache/helm/plugins"
           - name: XDG_CONFIG_HOME
             value: "/builder/home"
           - name: JX_SECRETS_YAML
