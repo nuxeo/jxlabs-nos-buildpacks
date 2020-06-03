@@ -9,25 +9,25 @@ pipelines:
     pipeline:
       agent:
         image: gcr.io/build-jx-prod/jxlabs-nos/jxl
+      options:
+        volumes:
+        - name: jx-boot-secrets
+          secret:
+            defaultMode: 420
+            secretName: jx-boot-secrets
+        containerOptions:
+          env:
+          - name: HELM_PLUGINS
+            value: "/root/.cache/helm/plugins"
+          - name: XDG_CONFIG_HOME
+            value: "/builder/home"
+          - name: JX_SECRETS_YAML
+            value: "/secrets/jx-boot/secrets.yaml"
+          volumeMounts:
+          - mountPath: /secrets/jx-boot
+            name: jx-boot-secrets
       stages:
       - name: release
-        options:
-          volumes:
-          - name: jx-boot-secrets
-            secret:
-              defaultMode: 420
-              secretName: jx-boot-secrets
-          containerOptions:
-            env:
-            - name: HELM_PLUGINS
-              value: "/root/.cache/helm/plugins"
-            - name: XDG_CONFIG_HOME
-              value: "/builder/home"
-            - name: JX_SECRETS_YAML
-              value: "/secrets/jx-boot/secrets.yaml"
-            volumeMounts:
-            - mountPath: /secrets/jx-boot
-              name: jx-boot-secrets
         steps:
         - args:
           - step
@@ -126,13 +126,25 @@ pipelines:
     pipeline:
       agent:
         image: gcr.io/build-jx-prod/jxlabs-nos/jxl
+      options:
+        volumes:
+        - name: jx-boot-secrets
+          secret:
+            defaultMode: 420
+            secretName: jx-boot-secrets
+        containerOptions:
+          env:
+          - name: HELM_PLUGINS
+            value: "/root/.cache/helm/plugins"
+          - name: XDG_CONFIG_HOME
+            value: "/builder/home"
+          - name: JX_SECRETS_YAML
+            value: "/secrets/jx-boot/secrets.yaml"
+          volumeMounts:
+          - mountPath: /secrets/jx-boot
+            name: jx-boot-secrets
       stages:
       - name: pr-checks
-        options:
-          containerOptions:
-            env:
-            - name: HELM_PLUGINS
-              value: "/root/.cache/helm/plugins"
         steps:
         - args:
           - step
