@@ -154,7 +154,7 @@ pipelines:
           - ../jx-requirements.values.yaml.gotmpl
           command: jx
           dir: /workspace/source
-          name: create-helmfile
+          name: generate-helmfile
         - args:
           - lint
           command: helmfile
