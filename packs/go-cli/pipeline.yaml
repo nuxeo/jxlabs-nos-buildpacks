@@ -1,3 +1,32 @@
 extends:
-  import: jxr-kubernetes
-  file: go-cli/pipeline.yaml
+  import: classic
+  file: go/pipeline.yaml
+pipelines:
+  pullRequest:
+    build:
+      steps:
+      - name: make-test
+        command: make test
+      - sh: /kaniko/executor --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
+        name: container-build
+        image: gcr.io/kaniko-project/executor
+  release:
+    build:
+      replace: true
+      steps:
+      - name: make-build
+        command: make release
+        image: gcr.io/jenkinsxio-labs/go-releaser
+      - sh: /kaniko/executor --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
+        name: container-build
+        image: gcr.io/kaniko-project/executor
+    setVersion:
+      steps:
+      - sh: jx step next-version --use-git-tag-only
+        name: next-version
+        image: gcr.io/jenkinsxio/jx
+        comment: so we can retrieve the version in later steps
+      - sh: jx step tag --version \$(cat VERSION)
+        image: gcr.io/jenkinsxio/jx
+        name: tag-version
+
