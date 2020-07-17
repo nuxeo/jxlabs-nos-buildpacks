@@ -6,11 +6,11 @@ pipelines:
     build:
       steps:
       - sh: jxl jenkins trigger
-        name: build
-        image: gcr.io/build-jx-prod/jxlabs-nos/jxl
+        name: trigger
+        image: gcr.io/build-jx-prod/jxlabs-nos-master/jxl
   release:
     build:
       steps:
       - sh: jxl jenkins trigger
-        name: build
-        image: gcr.io/build-jx-prod/jxlabs-nos/jxl
+        name: trigger
+        image: gcr.io/build-jx-prod/jxlabs-nos-master/jxl
