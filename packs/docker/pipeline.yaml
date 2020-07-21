@@ -14,6 +14,7 @@ pipelines:
 
   release:
     setVersion:
+      replace: true
       steps:
       - sh: jx step next-version --use-git-tag-only --tag
         name: tag-with-new-version
