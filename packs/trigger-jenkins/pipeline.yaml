@@ -5,12 +5,12 @@ pipelines:
   pullRequest:
     build:
       steps:
-      - sh: jxl jenkins trigger --branch=$BRANCH_NAME
+      - sh: jxl jenkins trigger --multi-branch-project --branch=$BRANCH_NAME --tail
         name: trigger
         image: gcr.io/build-jx-prod/jxlabs-nos-master/jxl
   release:
     build:
       steps:
-      - sh: jxl jenkins trigger
+      - sh: jxl jenkins trigger --multi-branch-project --branch=$BRANCH_NAME --tail
         name: trigger
         image: gcr.io/build-jx-prod/jxlabs-nos-master/jxl
