@@ -52,11 +52,8 @@ pipelines:
           command: jx
           dir: /workspace/source
           name: generate-helmfile
-        - command: helmfile diff || true
-          dir: /workspace/source/system
-          name: helmfile-system-diff
         - args:
-          - sync
+          - apply
           command: helmfile
           dir: /workspace/source/system
           name: helmfile-system
@@ -69,11 +66,8 @@ pipelines:
           command: jx
           dir: /workspace/source
           name: verify-ingress
-        - command: helmfile diff || true
-          dir: /workspace/source/apps
-          name: helmfile-apps-diff
         - args:
-          - sync
+          - apply
           command: helmfile
           dir: /workspace/source/apps
           name: helmfile-apps
