@@ -12,3 +12,15 @@ pipelines:
           sh: 'git fetch'
         - name: create-version-file
           sh: 'jx step next-version --version=$(make version~print)'
+        - name: tag-version
+          sh: 'jx step tag'
+  pulllRequest:
+    setVersion:
+      replace: true
+      steps:
+        - name: unshallow
+          sh: 'git fetch --unshallow'
+        - name: fetch-tags
+          sh: 'git fetch'
+        - name: create-version-file
+          sh: 'jx step next-version --version=$(make version~print)'
