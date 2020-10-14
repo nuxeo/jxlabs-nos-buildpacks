@@ -7,9 +7,9 @@ pipelines:
       replace: true
       steps:
         - name: unshallow
-          sh: 'git fetch --unshallow'
+          sh: 'git fetch --unshallow --recurse-submodules=false'
         - name: fetch-tags-also
-          sh: 'git fetch'
+          sh: 'git fetch --recurse-submodules=false'
         - name: create-version-file
           sh: 'jx step next-version --version=$(make version~print)'
     build:
@@ -22,9 +22,9 @@ pipelines:
       replace: true
       steps:
         - name: unshallow
-          sh: 'git fetch --unshallow'
+          sh: 'git fetch --unshallow --recurse-submodules=false'
         - name: fetch-tags-also
-          sh: 'git fetch'
+          sh: 'git fetch --recurse-submodules=false'
         - name: create-version-file
           sh: 'jx step next-version --version=$(make version~print)'
         - name: tag-version
