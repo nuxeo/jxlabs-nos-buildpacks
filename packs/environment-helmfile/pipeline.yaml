@@ -8,7 +8,7 @@ pipelines:
   release:
     pipeline:
       agent:
-        image: gcr.io/build-jx-prod/jxlabs-nos-master/jxl
+        image: gcr.io/build-jx-prod/jxlabs-nos-master/jxlabs-nos-jxl
       options:
         volumes:
         - name: jx-boot-secrets
@@ -117,7 +117,7 @@ pipelines:
   pullRequest:
     pipeline:
       agent:
-        image: gcr.io/build-jx-prod/jxlabs-nos-master/jxl
+        image: gcr.io/build-jx-prod/jxlabs-nos-master/jxlabs-nos-jxl
       options:
         volumes:
         - name: jx-boot-secrets
